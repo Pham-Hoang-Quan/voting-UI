@@ -23,6 +23,8 @@ import {
 } from "reactstrap";
 import { Modal, Button as ButtonAnt } from "antd";
 
+import apiUrl from "../../api-url";
+
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import Footer from "components/Footer/Footer.js";
@@ -103,7 +105,7 @@ export default function CreatePollScreen() {
       try {
         const userVoting = JSON.parse(localStorage.getItem("user-voting"));
         console.log("User voting: ", userVoting._id);
-        const res = await fetch(`/api/votings/create`, {
+        const res = await fetch(`${apiUrl}/api/votings/create`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

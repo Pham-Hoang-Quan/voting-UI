@@ -9,7 +9,8 @@ import moment from "moment";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useNavigate } from "react-router-dom";
-import apiUrl from "../../api-url";
+// import apiUrl from "../../api-url";
+import apiUrl from "api-url";
 
 const responsive = {
   desktop: {

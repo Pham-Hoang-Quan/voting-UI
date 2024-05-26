@@ -48,6 +48,7 @@ import { AppContext } from "context/AppContext";
 
 
 import axios from "axios";
+import apiUrl from "api-url";
 
 
 
@@ -106,7 +107,7 @@ export default function SignUpScreen({ account }) {
 
 
         // thêm vào mongodb
-        const res = await fetch(`/api/auth/signup`, {
+        const res = await fetch(`${apiUrl}/api/auth/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -133,7 +134,7 @@ export default function SignUpScreen({ account }) {
 
     const handleAddUseIdOnBC = async (userId) => {
         try {
-            axios.post("/api/smartcontract/addUser",
+            axios.post("${apiUrl}/api/smartcontract/addUser",
                 { user: userId }).
                 then(response => {
                     console.log(response.data);

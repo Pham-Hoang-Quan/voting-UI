@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
+import apiUrl from 'api-url';
 
 import { CardBody, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import { Card, CardHeader, CardFooter, Button } from "reactstrap";
@@ -10,18 +11,18 @@ const QRCodeCan = ({ userId, votingId }) => {
         const getUpdateVoteList = async () => {
             try {
                 if (votingId && userId && candidateNames.length <= 0) {
-                    const res = await fetch(`/api/smartcontract/getVoteUpdatesByIdVotingAndUser/${votingId}/${userId}`)
+                    const res = await fetch(`${apiUrl}/api/smartcontract/getVoteUpdatesByIdVotingAndUser/${votingId}/${userId}`)
                     const Data = await res.json();
                     console.log("getVoteUpdatesByIdVotingAndUser ", Data)
                     setUpdateVoteList(Data);
                     // nếu không có update nào thì lấy ra các vote của user đó
                     if (Data.length == 0) {
-                        const res = await fetch(`/api/smartcontract/getVoteByIdUser/${userId}`)
+                        const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdUser/${userId}`)
                         const votesByUserId = await res.json();
                         votesByUserId.map(async (vote) => {
                             console.log("Vote", vote);
                             if (vote.idVoting == votingId) {
-                                const response = await fetch(`/api/candidates/${vote.idCandidate}`);
+                                const response = await fetch(`${apiUrl}/api/candidates/${vote.idCandidate}`);
                                 if (response.ok) {
                                     const candidateData = await response.json();
                                     console.log("CandidateData", candidateData.name);
@@ -35,7 +36,7 @@ const QRCodeCan = ({ userId, votingId }) => {
                     }
 
                     const firstVote = Data[0];
-                    const response = await fetch(`/api/candidates/${firstVote[3]}`);
+                    const response = await fetch(`${apiUrl}/api/candidates/${firstVote[3]}`);
                     if (response.ok) {
                         const candidateData = await response.json();
                         console.log("CandidateData", candidateData.name);
@@ -48,7 +49,7 @@ const QRCodeCan = ({ userId, votingId }) => {
                     Data.map(async (update) => {
                         console.log("New candidate id", update.idCandidateNew);
 
-                        const response = await fetch(`/api/candidates/${update[2]}`);
+                        const response = await fetch(`${apiUrl}/api/candidates/${update[2]}`);
                         if (response.ok) {
                             const candidateData = await response.json();
                             console.log("CandidateData", candidateData.name);

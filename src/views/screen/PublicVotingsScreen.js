@@ -21,6 +21,7 @@ import { ConfigProvider, Pagination } from "antd";
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { Avatar, List, Space, Input } from 'antd';
 import Dalle3Component from "components/CreatePoll/Dalle3Component";
+import apiUrl from "api-url";
 
 const { Search } = Input;
 
@@ -51,7 +52,7 @@ export default function PublicVotingsScreen({ isLogin }) {
     // hàm getYourVotings
     async function getYourVotings() {
         try {
-            const response = await fetch(`/api/votings/getVotings/public`);
+            const response = await fetch(`${apiUrl}/api/votings/getVotings/public`);
             const data = await response.json();
             console.log(data);
             setVotings(data)

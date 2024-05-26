@@ -24,7 +24,7 @@ import {
 import { AppContext } from "context/AppContext";
 
 import { database, storage } from "firebase.js";
-
+ import apiUrl from "api-url";
 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
@@ -82,7 +82,7 @@ const ModalEdit = ({ votingInfo, loadVotingInfo }) => {
 
                 const userVoting = JSON.parse(localStorage.getItem("user-voting"));
                 console.log("User voting: ", userVoting._id);
-                const res = await fetch(`/api/votings/updateVoting/${votingInfo._id}`, {
+                const res = await fetch(`${apiUrl}/api/votings/updateVoting/${votingInfo._id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",

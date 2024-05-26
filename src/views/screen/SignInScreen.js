@@ -40,7 +40,7 @@ import { AppContext } from "context/AppContext";
 import { useContext } from "react";
 import { Button as ButtonAnt, Divider, notification, Space } from 'antd';
 import axios from "axios";
-
+import apiUrl from "api-url.js";
 
 export default function SignInScreen({ account }) {
     const [squares1to6, setSquares1to6] = React.useState("");
@@ -55,6 +55,7 @@ export default function SignInScreen({ account }) {
     const [userId, setUserId] = useState("");
     const timestamp = serverTimestamp(); // Lấy thời gian hiện tại từ máy chủ Firebase
     const navigate = useNavigate();
+
 
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (placement) => {
@@ -124,7 +125,7 @@ export default function SignInScreen({ account }) {
     const signInWithMongodb = async () => {
         console.log("sign in", email, password)
         try {
-            const res = await axios.post(`/api/auth/login`, {
+            const res = await axios.post(`${apiUrl}/api/auth/login`, {
                 email: email,
                 password: password
             })

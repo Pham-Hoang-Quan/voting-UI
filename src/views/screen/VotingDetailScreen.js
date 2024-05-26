@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { Form, FormGroup, Label, Input } from "reactstrap";
+import apiUrl from "api-url";
 
 // reactstrap components
 import {
@@ -84,7 +85,7 @@ export default function VotingDetail() {
         try {
             const canIdString = canId.toString()
             const id = generateRandomId().toString();
-            const res = await axios.post(`/api/smartcontract/addVote`, {
+            const res = await axios.post(`${apiUrl}/api/smartcontract/addVote`, {
                 _id: 'v' + id,
                 _idUser: userInfor._id,
                 _idCandidate: canIdString,
@@ -111,7 +112,7 @@ export default function VotingDetail() {
         try {
             const canIdString = canId.toString()
             const id = generateRandomId().toString();
-            const res = await axios.post(`/api/smartcontract/updateVote`, {
+            const res = await axios.post(`${apiUrl}/api/smartcontract/updateVote`, {
                 _id: 'v' + id,
                 _idUser: userInfor._id,
                 _idCandidateNew: canIdString,
@@ -137,7 +138,7 @@ export default function VotingDetail() {
     // hàm lấy danh sách các ứng viên từ firebase
     const loadCandidates = async () => {
         try {
-            const res = await fetch(`/api/votings/getAllCandiddates/${idVoting}`);
+            const res = await fetch(`${apiUrl}/api/votings/getAllCandiddates/${idVoting}`);
             if (res.ok) {
                 const data = await res.json();
                 setCandidates(data);
@@ -149,7 +150,7 @@ export default function VotingDetail() {
     const loadVotingInfo = async () => {
         // lấy thông tin cuộc bình chọn từ mongodb
         try {
-            const res = await fetch(`/api/votings/${idVoting}`);
+            const res = await fetch(`${apiUrl}/api/votings/${idVoting}`);
             if (res.ok) {
                 const data = await res.json();
                 setVotingInfo(data);
@@ -172,7 +173,7 @@ export default function VotingDetail() {
     const getTransWithVotingId = async () => {
         try {
             if (idVoting) {
-                const res = await fetch(`/api/smartcontract/getVoteByIdVoting/${idVoting}`)
+                const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdVoting/${idVoting}`)
                 const transData = await res.json();
                 setTrans(transData);
                 console.log(transData);
@@ -216,7 +217,7 @@ export default function VotingDetail() {
                 const userId = userInfor ? userInfor._id : null;
                 const checkUserJoinVoting = async () => {
                     try {
-                        const res = await fetch(`/api/participants/checkUser/${idVoting}`, {
+                        const res = await fetch(`${apiUrl}/api/participants/checkUser/${idVoting}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -309,7 +310,7 @@ export default function VotingDetail() {
 
     const handleJoinVoting = async () => {
         try {
-            const res = await fetch(`/api/participants/addUserWithPassword/${idVoting}`, {
+            const res = await fetch(`${apiUrl}/api/participants/addUserWithPassword/${idVoting}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

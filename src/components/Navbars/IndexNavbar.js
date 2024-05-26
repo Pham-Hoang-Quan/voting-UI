@@ -20,6 +20,7 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap";
+import apiUrl from "api-url";
 import {
   getAuth,
   signOut,
@@ -106,7 +107,7 @@ export default function IndexNavbar({ isLogin }) {
 
     try {
       //////
-      const response = await axios.post(`/api/auth/logout`)
+      const response = await axios.post(`${apiUrl}/api/auth/logout`)
         .then((res) => {
           console.log(res);
           localStorage.removeItem("user-voting");
@@ -194,7 +195,7 @@ export default function IndexNavbar({ isLogin }) {
       }
 
       // Updating user information in MongoDB
-      const response = await axios.post(`/api/users/updateUser/${userInfo._id}`, {
+      const response = await axios.post(`${apiUrl}/api/users/updateUser/${userInfo._id}`, {
         name: nameInput.value,
         email: emailInput.value,
         avtUrl: imageUrl,
@@ -205,7 +206,7 @@ export default function IndexNavbar({ isLogin }) {
       })
 
       // Fetch updated user information from MongoDB and update localStorage
-      const response2 = await axios.get(`/api/users/${userInfo._id}`)
+      const response2 = await axios.get(`${apiUrl}/api/users/${userInfo._id}`)
         .then((res) => {
           console.log(res);
           localStorage.setItem("user-voting", JSON.stringify(res.data));
@@ -238,7 +239,7 @@ export default function IndexNavbar({ isLogin }) {
         return;
       }
 
-      const res = await fetch(`/api/auth/changePassword/${userInfo._id}`, {
+      const res = await fetch(`${apiUrl}/api/auth/changePassword/${userInfo._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -268,7 +269,7 @@ export default function IndexNavbar({ isLogin }) {
       }
 
       ////
-      const response = await axios.post(`/api/auth/changePassword/${userInfo._id}`, {
+      const response = await axios.post(`${apiUrl}/api/auth/changePassword/${userInfo._id}`, {
         oldPassword,
         newPassword
       })

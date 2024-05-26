@@ -25,6 +25,7 @@ import { MaterialUIControllerProvider } from "context";
 import UploadImage from "components/home/UploadImage";
 import { message } from 'antd';
 import axios from "axios";
+import apiUrl from "api-url";
 
 
 export default function Home({ isLogin }) {
@@ -59,7 +60,7 @@ export default function Home({ isLogin }) {
         if (votingInfo.isPrivate) {
             try {
                 const idVoting = votingInfo._id;
-                axios.post(`/api/participants/addUserWithPassword/${idVoting}`, { userId: userInfor._id, password })
+                axios.post(`${apiUrl}/api/participants/addUserWithPassword/${idVoting}`, { userId: userInfor._id, password })
                     .then(res => {
                         console.log(res);
                         console.log(res.data);
@@ -75,7 +76,7 @@ export default function Home({ isLogin }) {
         } else {
             try {
                 const idVoting = votingInfo._id;
-                axios.post(`/api/participants/addParticipant/${idVoting}`, { userId: userInfor._id })
+                axios.post(`${apiUrl}/api/participants/addParticipant/${idVoting}`, { userId: userInfor._id })
                     .then(res => {
                         console.log(res);
                         console.log(res.data);
@@ -94,7 +95,7 @@ export default function Home({ isLogin }) {
     const handleSearch = async () => {
         // lấy thong tin voting từ mongodb
         try {
-            const res = await axios.get(`/api/votings/${idSearch}`)
+            const res = await axios.get(`${apiUrl}/api/votings/${idSearch}`)
                 .then(res => {
                     console.log(res);
                     setVotingInfo(res.data);

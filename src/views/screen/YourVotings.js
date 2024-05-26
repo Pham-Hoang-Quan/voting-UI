@@ -18,6 +18,7 @@ import { MaterialUIControllerProvider } from "context";
 import UploadImage from "components/home/UploadImage";
 import moment from "moment";
 import { ConfigProvider, Pagination } from "antd";
+import apiUrl from "api-url";
 
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { Avatar, List, Space, Input } from 'antd';
@@ -51,7 +52,7 @@ export default function YourVotings({ isLogin }) {
     // hàm getYourVotings
     async function getYourVotings() {
         try {
-            const response = await fetch(`/api/votings/getYourVotings/${userInfor._id}`);
+            const response = await fetch(`${apiUrl}/api/votings/getYourVotings/${userInfor._id}`);
             const data = await response.json();
             console.log(data);
             setVotings(data)

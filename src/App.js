@@ -88,7 +88,6 @@ function App() {
                         </Routes>
                     </BrowserRouter>
                 </Provider>
-
             </AppProvider>
 
     );
