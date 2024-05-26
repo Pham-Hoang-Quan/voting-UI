@@ -56,7 +56,7 @@ function PublicVotings() {
     }
     getAllVotings();
     console.log("Votings: " + recentPolls);
-  }, []);
+  }, [polls, recentPolls]);
 
   return (
     <div>
