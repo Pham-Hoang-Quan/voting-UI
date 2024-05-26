@@ -40,7 +40,7 @@ function App() {
     return (
             <AppProvider>
                 <Provider store={store}>
-                    {/* <BrowserRouter> */}
+                    <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<Home isLogin={isLogin} user={user} />} />
                             <Route path="/signUp-page" element={<SignUpScreen account={account} />} />
@@ -86,7 +86,7 @@ function App() {
 
                             <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
-                    {/* </BrowserRouter> */}
+                    </BrowserRouter>
                 </Provider>
 
             </AppProvider>
