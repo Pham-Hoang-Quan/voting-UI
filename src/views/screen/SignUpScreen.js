@@ -117,7 +117,8 @@ export default function SignUpScreen({ account }) {
                 password,
                 name,
                 role: "user",
-                userId
+                userId,
+                address: "address"
             }),
         });
 
