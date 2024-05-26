@@ -77,28 +77,6 @@ export default function SignUpScreen({ account }) {
             .then((userCredential) => {
                 console.log(userCredential);
                 const user = userCredential.user;
-
-                // Thêm thông tin người dùng vào cơ sở dữ liệu
-                const userData = {
-                    userId: user.uid,
-                    name: name,
-                    email: email,
-                    avtUrl: "",
-                    role: 'user',
-                    createAt: timestamp,
-                    address: account, // id của metamask trả về
-                };
-                // Ghi thông tin người dùng vào cơ sở dữ liệu
-                set(ref(database, 'users/' + user.uid), userData)
-                    .then(() => {
-                        console.log("User data written successfully to database");
-                        // Sau khi ghi thành công vào cơ sở dữ liệu, chuyển hướng người dùng đến trang chủ
-                        // window.location.href = "/";
-
-                    })
-                    .catch((error) => {
-                        console.error("Error writing user data to database: ", error);
-                    });
             }
             )
             .catch((error) => {
@@ -135,7 +113,7 @@ export default function SignUpScreen({ account }) {
 
     const handleAddUseIdOnBC = async (userId) => {
         try {
-            axios.post("${apiUrl}/api/smartcontract/addUser",
+            axios.post(`${apiUrl}/api/smartcontract/addUser`,
                 { user: userId }).
                 then(response => {
                     console.log(response.data);
