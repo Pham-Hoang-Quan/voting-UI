@@ -6,15 +6,10 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import moment from "moment";
 
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-// import { Grid } from "@mui/material";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import MDTypography from "components/MDTypography";
-
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, useNavigate } from "react-router-dom";
+import apiUrl from "../../api-url";
 
 const responsive = {
   desktop: {
@@ -39,12 +34,13 @@ function PublicVotings() {
   const [recentPolls, setRecentPolls] = useState([]);
   const [users, setUsers] = useState([]);
 
+
   const navigate = useNavigate();
   useEffect(() => {
     // hàm láy danh sách votings từ mongodb
     async function getAllVotings() {
       try {
-        const response = await fetch(`/api/votings/getVotings/public`);
+        const response = await fetch(`${apiUrl}/api/votings/getVotings/public`);
         const data = await response.json();
         console.log(data);
         setPolls(data);
