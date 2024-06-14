@@ -113,7 +113,7 @@ export default function VoteByQRCode() {
                     }
 
                     localStorage.setItem("user-voting", JSON.stringify(res.data.user));
-                    // setAuthUser(res.data.user);
+                    setAuthUser(res.data.user);
                     // navigate('/');
                     setFormModal(false);
                 })
@@ -255,7 +255,7 @@ export default function VoteByQRCode() {
                 // setVotedModal(true);
                 success("Voting added successfully");
                 setLoading(false);
-                navigate(`/votingDetail?votingId=${candidateInfo.idVoting}`);
+                // navigate(`/votingDetail?votingId=${candidateInfo.idVoting}`);
 
             })
         } catch (error) {

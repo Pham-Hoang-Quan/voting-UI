@@ -592,11 +592,11 @@ export default function VotingDetail() {
                 <Modal
                     modalClassName="modal-black"
                     isOpen={moreModal}
-                    // toggle={() => setMoreModal(false)}
+                    toggle={() => setMoreModal(false)}
                     style={{ height: "90%", marginTop: '0px', }}
                 >
                     <div className="modal-header justify-content-center">
-                        <button className="close" onClick={() => setFormModal(false)}>
+                        <button className="close" onClick={() => setMoreModal(false)}>
                             <i className="tim-icons icon-simple-remove text-white" />
                         </button>
                         <div className="text-muted text-center ml-auto mr-auto">
