@@ -30,6 +30,8 @@ import TransactionsListScreen from "views/admin/TransactionsListScreen.js";
 import YourVotings from "views/screen/YourVotings.js";
 import PublicVotingsScreen from "views/screen/PublicVotingsScreen.js";
 import { AdminRoute } from "components/admin/AdminRoute.js";
+import VoteByQRCode from "views/screen/VoteByQRCode.js";
+import { LoginRoute } from "views/screen/LoginRoute.js";
 // create the client with your clientId, or secretKey if in a server environment
 function App() {
     const [account, setAccount] = useState(null);
@@ -38,57 +40,89 @@ function App() {
     const auth = getAuth();
 
     return (
-            <AppProvider>
-                <Provider store={store}>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<Home isLogin={isLogin} user={user} />} />
-                            <Route path="/signUp-page" element={<SignUpScreen account={account} />} />
-                            <Route path="/signIn-page" element={<SignInScreen account={account} />} />
-                            <Route path="/createPoll" element={<CreatePollScreen />} />
-                            <Route path="/addCandidate" element={<AddCandidate />} />
-                            <Route path="/votingDetail" element={<VotingDetail />} />
-                            <Route path="/your-votings" element={<YourVotings />} />
-                            <Route path="/public-votings" element={<PublicVotingsScreen />} />
+        <AppProvider>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Routes>
+                        {/* <Route path="/" element={<Home isLogin={isLogin} user={user} />} /> */}
+                        <Route path="/signUp-page" element={<SignUpScreen account={account} />} />
+                        <Route path="/signIn-page" element={<SignInScreen account={account} />} />
+                        {/* <Route path="/createPoll" element={<CreatePollScreen />} />
+                        <Route path="/addCandidate" element={<AddCandidate />} />
+                        <Route path="/votingDetail" element={<VotingDetail />} />
+                        <Route path="/your-votings" element={<YourVotings />} />
+                        <Route path="/public-votings" element={<PublicVotingsScreen />} /> */}
+
+                        <Route path="/" element={
+                            <LoginRoute>
+                                <Home isLogin={isLogin} user={user} />
+                            </LoginRoute>
+                        } />
+                        <Route path="/createPoll" element={
+                            <LoginRoute>
+                                <CreatePollScreen />
+                            </LoginRoute>
+                        } />
+                        <Route path="/addCandidate" element={
+                            <LoginRoute>
+                                <AddCandidate />
+                            </LoginRoute>
+                        } />
+                        <Route path="/votingDetail" element={
+                            <LoginRoute>
+                                <VotingDetail />
+                            </LoginRoute>
+                        } />
+                        <Route path="/your-votings" element={
+                            <LoginRoute>
+                                <YourVotings />
+                            </LoginRoute>
+                        } />
+                        <Route path="/public-votings" element={
+                            <LoginRoute>
+                                <PublicVotingsScreen />
+                            </LoginRoute>
+                        } />
                             // các trang template
-                            <Route path="/components" element={<Index />} />
-                            <Route path="/landing" element={<LandingPage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/components" element={<Index />} />
+                        <Route path="/landing" element={<LandingPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/voteByQRCode" element={<VoteByQRCode />} />
 
-                            <Route path="/adminDashboard" element={
-                                <AdminRoute>
-                                    <MaterialUIControllerProvider>
-                                        <AdminDashboard />
-                                    </MaterialUIControllerProvider>
-                                </AdminRoute>
-                            } />
-                            <Route path="/votings" element={
-                                <AdminRoute>
-                                    <MaterialUIControllerProvider>
-                                        <Votings />
-                                    </MaterialUIControllerProvider>
-                                </AdminRoute>
-                            } />
-                            <Route path="/users" element={
-                                <AdminRoute>
-                                    <MaterialUIControllerProvider>
-                                        <UserListScreen />
-                                    </MaterialUIControllerProvider>
-                                </AdminRoute>
-                            } />
-                            <Route path="/transactions" element={
-                                <AdminRoute>
-                                    <MaterialUIControllerProvider>
-                                        <TransactionsListScreen />
-                                    </MaterialUIControllerProvider>
-                                </AdminRoute>
-                            } />
+                        <Route path="/adminDashboard" element={
+                            <AdminRoute>
+                                <MaterialUIControllerProvider>
+                                    <AdminDashboard />
+                                </MaterialUIControllerProvider>
+                            </AdminRoute>
+                        } />
+                        <Route path="/votings" element={
+                            <AdminRoute>
+                                <MaterialUIControllerProvider>
+                                    <Votings />
+                                </MaterialUIControllerProvider>
+                            </AdminRoute>
+                        } />
+                        <Route path="/users" element={
+                            <AdminRoute>
+                                <MaterialUIControllerProvider>
+                                    <UserListScreen />
+                                </MaterialUIControllerProvider>
+                            </AdminRoute>
+                        } />
+                        <Route path="/transactions" element={
+                            <AdminRoute>
+                                <MaterialUIControllerProvider>
+                                    <TransactionsListScreen />
+                                </MaterialUIControllerProvider>
+                            </AdminRoute>
+                        } />
 
-                            <Route path="*" element={<Navigate to="/" replace />} />
-                        </Routes>
-                    </BrowserRouter>
-                </Provider>
-            </AppProvider>
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </BrowserRouter>
+            </Provider>
+        </AppProvider>
 
     );
 }

@@ -50,6 +50,7 @@ import Top5Chart from "components/DetailVoting/Top5Chart";
 import FinishVoting from "components/DetailVoting/FinishVoting";
 import ModalEdit from "components/DetailVoting/ModalEdit";
 import axios from "axios";
+import ModalMoreInfo from "components/DetailVoting/ModalMoreInfo";
 
 let ps = null;
 
@@ -70,9 +71,10 @@ export default function VotingDetail() {
     const userInfor = JSON.parse(localStorage.getItem('user-voting'));
     const [isOwner, setIsOwner] = useState(false);
     const [formModal, setFormModal] = useState(false);
+    const [moreModal, setMoreModal] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
     const [password, setPassword] = useState('');
-
+    const [selectedCandidate, setSelectedCandidate] = useState({});
     const navigate = useNavigate();
 
     function generateRandomId() {
@@ -363,6 +365,11 @@ export default function VotingDetail() {
             </div >
         );
     }
+    
+    const showMoreInfo = async (candidate) => {
+        setSelectedCandidate(candidate);
+        setMoreModal(true);
+    }
     return (
         <>
             <IndexNavbar />
@@ -530,6 +537,7 @@ export default function VotingDetail() {
                                                                 votes
                                                             </span>
                                                             <hr className="line-primary" />
+                                                            <a onClick={() => showMoreInfo(candidate)}> QR Code </a>
                                                         </Col>
                                                     </Row>
                                                     <Row>
@@ -580,6 +588,22 @@ export default function VotingDetail() {
                     </div>
                     <ModalEdit loadVotingInfo={loadVotingInfo} votingInfo={votingInfo}></ModalEdit>
 
+                </Modal>
+                <Modal
+                    modalClassName="modal-black"
+                    isOpen={moreModal}
+                    // toggle={() => setMoreModal(false)}
+                    style={{ height: "90%", marginTop: '0px', }}
+                >
+                    <div className="modal-header justify-content-center">
+                        <button className="close" onClick={() => setFormModal(false)}>
+                            <i className="tim-icons icon-simple-remove text-white" />
+                        </button>
+                        <div className="text-muted text-center ml-auto mr-auto">
+                            <h3 className="mb-0">More information</h3>
+                        </div>
+                    </div>
+                    <ModalMoreInfo selectedCan={selectedCandidate}></ModalMoreInfo>
                 </Modal>
             </div>
         </>
