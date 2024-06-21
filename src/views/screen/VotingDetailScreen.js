@@ -211,6 +211,12 @@ export default function VotingDetail() {
     }, []);
 
     useEffect(() => {
+        // console.log(votingInfo.owner._id + userInfor._id)
+        if(votingInfo && userInfor) {
+            setIsOwner(votingInfo.owner._id == userInfor._id);
+        }
+    }, [votingInfo, userInfor])
+    useEffect(() => {
         // nếu voting là private thì kiểm tra join hay chưa,
         // là public thì cho isJoined = true
         // nếu chưa join thì return form để nhập mật khẩu và join

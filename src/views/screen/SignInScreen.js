@@ -28,11 +28,11 @@ import {
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Signup from "views/IndexSections/Signup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword , sendPasswordResetEmail} from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../firebase.js";
 
-import { getDatabase, ref, set, serverTimestamp, onValue } from "firebase/database";
+import {  getDatabase, ref, set, serverTimestamp, onValue } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
@@ -142,7 +142,7 @@ export default function SignInScreen({ account }) {
                     localStorage.setItem("user-voting", JSON.stringify(res.data.user));
                     setAuthUser(res.data.user);
                     navigate('/');
-            })
+                })
         } catch (error) {
             // toast.error(error.message);
         } finally {
@@ -216,15 +216,20 @@ export default function SignInScreen({ account }) {
                                                         }}
                                                     ></i>
                                                 </InputGroup>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                }}>
+                                                    <Label>
+                                                        <span className="form-check-sign" />Don't have an account? {" "}
+                                                        <a href="#pablo" onClick={() => window.location.href = '/signUp-page'}>
+                                                            Create an account
+                                                        </a>
+                                                        .
+                                                    </Label>
+                                                </div>
 
-                                                <Label>
 
-                                                    <span className="form-check-sign" />Don't have an account? {" "}
-                                                    <a href="#pablo" onClick={() => window.location.href = '/signUp-page'}>
-                                                        Create an account
-                                                    </a>
-                                                    .
-                                                </Label>
 
                                             </Form>
                                         </CardBody>

@@ -135,7 +135,6 @@ export default function IndexNavbar({ isLogin }) {
     }
   };
 
-
   const handleUpdateUser = async () => {
     setOpen(false);
     setLoading(true);
@@ -222,9 +221,6 @@ export default function IndexNavbar({ isLogin }) {
       setLoading(false);
     }
   };
-
-
-
   const handleChangePassword = async () => {
     setOpenChangePass(false);
     setLoading(true);
@@ -290,7 +286,6 @@ export default function IndexNavbar({ isLogin }) {
   function promptForCredentialsForChangePass(email, password) {
     return EmailAuthProvider.credential(email, password);
   }
-
   function promptForCredentials() {
     const email = userInfo.email;
     const password = prompt("Please enter your password to change email address");
