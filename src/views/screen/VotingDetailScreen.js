@@ -157,9 +157,6 @@ export default function VotingDetail() {
                 const data = await res.json();
                 setVotingInfo(data);
                 console.log(data.owner);
-                if (data.owner == userInfor._id) {
-                    setIsOwner(true);
-                }
             } else {
                 alert("Voting not found")
                 return (<div></div>)
