@@ -34,6 +34,7 @@ import moment from "moment";
 import { message } from 'antd';
 
 import { Tabs } from 'antd';
+import apiUrl from "api-url";
 const onChange = (key) => {
     console.log(key);
 };
@@ -57,7 +58,7 @@ function UserList() {
     async function handleBlockUser(id) {
         console.log(id.key)
         try {
-            const response = await fetch(`/api/users/blockUser/${id.key}`, {
+            const response = await fetch(`${apiUrl}/api/users/blockUser/${id.key}`, {
                 method: 'PUT',
             });
             const data = await response.json();
@@ -74,7 +75,7 @@ function UserList() {
     async function handleUnBlockUser(id) {
         console.log(id.key)
         try {
-            const response = await fetch(`/api/users/unblockUser/${id.key}`, {
+            const response = await fetch(`${apiUrl}/api/users/unblockUser/${id.key}`, {
                 method: 'PUT',
             });
             const data = await response.json();
@@ -91,7 +92,7 @@ function UserList() {
     }
     async function getUsers() {
         try {
-            const response = await fetch(`/api/users/getUsers/unblocked`, {
+            const response = await fetch(`${apiUrl}/api/users/getUsers/unblocked`, {
                 method: "GET",
             });
             const data = await response.json();
@@ -102,7 +103,7 @@ function UserList() {
     }
     async function getBlockedUsers() {
         try {
-            const response = await fetch(`/api/users/getUsers/blocked`, {
+            const response = await fetch(`${apiUrl}/api/users/getUsers/blocked`, {
                 method: "GET",
             });
             const data = await response.json();

@@ -208,7 +208,7 @@ export default function VotingDetail() {
     }, []);
 
     useEffect(() => {
-        // console.log(votingInfo.owner._id + userInfor._id)
+        console.log(votingInfo.owner._id + userInfor._id)
         if(votingInfo && userInfor) {
             setIsOwner(votingInfo.owner._id == userInfor._id);
         }

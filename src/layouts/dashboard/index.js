@@ -41,6 +41,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
 import { Link } from "react-router-dom";
+import apiUrl from "api-url";
 const { Meta } = Card;
 
 function Dashboard() {
@@ -57,7 +58,7 @@ function Dashboard() {
     // hàm láy danh sách votings từ mongodb
     async function getAllVotings() {
       try {
-        const response = await fetch(`http://localhost:5500/api/votings/getVotings/all`);
+        const response = await fetch(`${apiUrl}/api/votings/getVotings/all`);
         const data = await response.json();
         console.log(data);
         setPolls(data);
@@ -71,7 +72,7 @@ function Dashboard() {
     // hàm lấy danh sách các users từ mongodb
     async function getAllUsers() {
       try {
-        const response = await fetch(`http://localhost:5500/api/users/getUsers/user`);
+        const response = await fetch(`${apiUrl}/api/users/getUsers/user`);
         const data = await response.json();
         setUsers(data);
       } catch (error) {
@@ -89,7 +90,7 @@ function Dashboard() {
       <MDBox py={3}>
         {/* # 3 block votings, users, and ... */}
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4} lg={4}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
@@ -98,14 +99,14 @@ function Dashboard() {
                 // count={countVotings}
                 count={polls.length}
                 percentage={{
-                  color: "success",
-                  amount: countVotingsDoing.length.toString(),
-                  label: "in progress",
+                  color: "",
+                  amount: "",
+                  label: "",
                 }}
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={4} lg={4}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="Users"
@@ -113,44 +114,13 @@ function Dashboard() {
                 // count={countUsers}
                 count={users.length}
                 percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          {/* <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
+                  color: "",
                   amount: "",
-                  label: "Just updated",
+                  label: "",
                 }}
               />
             </MDBox>
-          </Grid> */}
-
+          </Grid>
 
         </Grid>
       </MDBox>
@@ -160,49 +130,51 @@ function Dashboard() {
             Recents
           </MDTypography>
         </MDBox>
-        <MDBox p={2}>
+        <MDBox p={0}>
           <div>
 
           </div>
           <Grid style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '10px',
-          }} container spacing={6}>
+            // display: 'flex',
+            // justifyContent: 'center',
+            // marginTop: '0px',
+          }} container spacing={0}>
             {recentPolls.map((voting) => (
               <>
-                <Card
-                  style={{
-                    width: 300,
-                    margin: '30px',
-                    boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.3)',
+                <Grid item xs={12} md={4} lg={4}>
+                  <Card
+                    style={{
+                      // width: "250px",
+                      margin: '10px',
+                      boxShadow: '10px 10px 10px rgba(0, 0, 0, 0.3)',
+                      height: "400px"
+                    }}
+                    cover={
+                      <img
+                        alt="example"
+                        src={voting.imgUrl}
+                        style={{ height: 200, objectFit: 'cover' }}
+                      />}
+                    actions={[
+                      <Link to={`/votingDetail/${voting._id}`}>
+                        <SettingOutlined key="setting" />
+                      </Link>,
+                      <Link to={`/votingDetail/${voting._id}`}>
+                        <EditOutlined key="edit" />
+                      </Link>,
 
-                  }}
-                  cover={
-                    <img
-                      alt="example"
-                      src={voting.imgUrl}
-                      style={{ width: 300, height: 200, objectFit: 'cover' }}
-                    />}
-                  actions={[
-                    <Link to={`/votingDetail/${voting._id}`}>
-                      <SettingOutlined key="setting" />
-                    </Link>,
-                    <Link to={`/votingDetail/${voting._id}`}>
-                      <EditOutlined key="edit" />
-                    </Link>,
+                    ]}
+                  >
+                    <Meta
+                      avatar={<Avatar src={(voting.owner ? voting.owner.avtUrl : 'https://png.pngtree.com/png-clipart/20210829/original/pngtree-universal-user-account-role-account-my-icon-icon-png-image_6679911.jpg')} />}
+                      title={voting.title}
+                      description={voting.description.slice(0, 91) + "..."}
+                    />
+                  </Card>
+                </Grid>
 
-                  ]}
-                >
-                  <Meta
-                    avatar={<Avatar src={(voting.owner ? voting.owner.avtUrl : 'https://png.pngtree.com/png-clipart/20210829/original/pngtree-universal-user-account-role-account-my-icon-icon-png-image_6679911.jpg')} />}
-                    title={voting.title}
-                    description={voting.description.slice(0, 91) + "..."}
-                  />
-                </Card>
               </>
             ))}
-
           </Grid>
         </MDBox>
       </Grid>
