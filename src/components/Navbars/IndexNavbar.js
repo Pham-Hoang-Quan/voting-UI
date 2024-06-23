@@ -374,7 +374,7 @@ export default function IndexNavbar({ isLogin }) {
             <NavItem className="p-0">
               <NavLink
                 data-placement="bottom"
-                href="https://twitter.com/CreativeTim"
+                href="/"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Follow us on Twitter"
@@ -386,7 +386,7 @@ export default function IndexNavbar({ isLogin }) {
             <NavItem className="p-0">
               <NavLink
                 data-placement="bottom"
-                href="https://www.facebook.com/CreativeTim"
+                href="/"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Like us on Facebook"
@@ -398,7 +398,7 @@ export default function IndexNavbar({ isLogin }) {
             <NavItem className="p-0">
               <NavLink
                 data-placement="bottom"
-                href="https://www.instagram.com/CreativeTimOfficial"
+                href="/"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Follow us on Instagram"

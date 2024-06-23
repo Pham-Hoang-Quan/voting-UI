@@ -156,7 +156,7 @@ export default function VotingDetail() {
             if (res.ok) {
                 const data = await res.json();
                 setVotingInfo(data);
-                console.log(data.owner, userInfor._id);
+                console.log(data.owner);
                 if (data.owner == userInfor._id) {
                     setIsOwner(true);
                 }
