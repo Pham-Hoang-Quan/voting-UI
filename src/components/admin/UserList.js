@@ -60,7 +60,9 @@ function UserList() {
         try {
             const response = await fetch(`${apiUrl}/api/users/blockUser/${id.key}`, {
                 method: 'PUT',
+                credentials: 'include',
             });
+                      
             const data = await response.json();
             console.log(data)
             if (data) {
@@ -77,6 +79,7 @@ function UserList() {
         try {
             const response = await fetch(`${apiUrl}/api/users/unblockUser/${id.key}`, {
                 method: 'PUT',
+                credentials: 'include',
             });
             const data = await response.json();
             console.log(data)
@@ -94,6 +97,7 @@ function UserList() {
         try {
             const response = await fetch(`${apiUrl}/api/users/getUsers/unblocked`, {
                 method: "GET",
+                credentials: 'include',
             });
             const data = await response.json();
             setUsers(data);
@@ -105,6 +109,7 @@ function UserList() {
         try {
             const response = await fetch(`${apiUrl}/api/users/getUsers/blocked`, {
                 method: "GET",
+                credentials: 'include',
             });
             const data = await response.json();
             console.log(data);

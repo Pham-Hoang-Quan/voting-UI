@@ -42,7 +42,6 @@ export default function AdminDashboard() {
     setRtlCache(cacheRtl);
   }, []);
 
-  // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
@@ -50,7 +49,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);

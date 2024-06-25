@@ -49,10 +49,17 @@ export default function PublicVotingsScreen({ isLogin }) {
         getYourVotings();
     }, []);
 
+    // const token = document.cookie.jwt;
+    // khai báo token lấy từ localStorage
+    const token = localStorage.getItem("jwt");
+
     // hàm getYourVotings
     async function getYourVotings() {
         try {
-            const response = await fetch(`${apiUrl}/api/votings/getVotings/public`);
+            const response = await fetch(`${apiUrl}/api/votings/getVotings/public?token=${token}`, {
+                credentials: 'include',
+                 // Điều này đảm bảo cookie được gửi kèm theo yêu cầu
+            });            
             const data = await response.json();
             console.log(data);
             setVotings(data)

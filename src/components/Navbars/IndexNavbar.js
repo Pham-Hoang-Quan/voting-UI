@@ -1,6 +1,7 @@
 
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import Cookies from 'js-cookie';
 import { Avatar, Badge, Box, CircularProgress, TextField } from "@mui/material";
 // reactstrap components
 import {
@@ -106,8 +107,12 @@ export default function IndexNavbar({ isLogin }) {
     });
 
     try {
+      Cookies.set('jwt', "", { expires: 7 });
       //////
-      const response = await axios.post(`${apiUrl}/api/auth/logout`)
+      const response = await axios.post(`${apiUrl}/api/auth/logout`, {},
+        {
+          withCredentials: true,
+        })
         .then((res) => {
           console.log(res);
           localStorage.removeItem("user-voting");
@@ -198,6 +203,8 @@ export default function IndexNavbar({ isLogin }) {
         name: nameInput.value,
         email: emailInput.value,
         avtUrl: imageUrl,
+      }, {
+        withCredentials: true,
       }).then(response => {
         console.log(response);
       }).catch(err => {
@@ -205,7 +212,9 @@ export default function IndexNavbar({ isLogin }) {
       })
 
       // Fetch updated user information from MongoDB and update localStorage
-      const response2 = await axios.get(`${apiUrl}/api/users/${userInfo._id}`)
+      const response2 = await axios.get(`${apiUrl}/api/users/${userInfo._id}`, {
+        withCredentials: true,
+      })
         .then((res) => {
           console.log(res);
           localStorage.setItem("user-voting", JSON.stringify(res.data));
@@ -242,6 +251,7 @@ export default function IndexNavbar({ isLogin }) {
           oldPassword,
           newPassword
         }),
+        credentials: 'include',
       });
       if (res.ok) {
         const data = await res.json();
@@ -268,6 +278,8 @@ export default function IndexNavbar({ isLogin }) {
       const response = await axios.post(`${apiUrl}/api/auth/changePassword/${userInfo._id}`, {
         oldPassword,
         newPassword
+      }, {
+        withCredentials: true,
       })
         .then((res) => {
           console.log(res);
@@ -324,7 +336,6 @@ export default function IndexNavbar({ isLogin }) {
           >
           </CircularProgress>
         </div>
-
       }
       <Container>
         <div className="navbar-translate">
@@ -373,7 +384,7 @@ export default function IndexNavbar({ isLogin }) {
             </Row>
           </div>
           <Nav navbar>
-            {(userInfo.role == "admin") && <NavItem>
+            {(userInfo && userInfo.role == "admin") && <NavItem>
               <Button
                 className="nav-link d-none d-lg-block"
                 color="primary"

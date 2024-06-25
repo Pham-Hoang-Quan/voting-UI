@@ -41,10 +41,13 @@ function PublicVotings() {
     // hàm láy danh sách votings từ mongodb
     async function getAllVotings() {
       try {
-        const response = await fetch(`${apiUrl}/api/votings/getVotings/public`);
+        const response = await fetch(`${apiUrl}/api/votings/getVotings/public`, {
+          credentials: 'include',
+      });            
         const data = await response.json();
         console.log(data);
-        setPolls(data);
+        const reversedData = data.reverse();
+        setPolls(reversedData);
         // lấy 4 votings gần nhất gán vào recentPolls
         setRecentPolls(data.slice(0, 3));
       } catch (error) {
@@ -53,7 +56,7 @@ function PublicVotings() {
     }
     getAllVotings();
     console.log("Votings: " + recentPolls);
-  }, [polls, recentPolls]);
+  }, []);
 
   return (
     <div>
@@ -93,7 +96,7 @@ function PublicVotings() {
             </div>
           </Col>
         </Row>
-        <Carousel responsive={responsive}>
+        {polls.length > 0  && <Carousel responsive={responsive}>
           {polls.map((poll) => (
             <Col lg="12" sm="12"
               key={poll._id}
@@ -122,7 +125,7 @@ function PublicVotings() {
               </div>
             </Col>
           ))}
-        </Carousel>
+        </Carousel>}
         {/* </Row> */}
 
       </div>

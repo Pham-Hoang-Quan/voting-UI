@@ -120,7 +120,7 @@ export default function CreatePollScreen() {
             password: password,
             isPrivate: isPrivate,
           }),
-
+          credentials: 'include',
         });
 
         const data = await res.json();

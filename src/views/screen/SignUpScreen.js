@@ -3,6 +3,7 @@ import React from "react";
 import classnames from "classnames";
 import { useEffect } from "react";
 import abi from "../../contract/TransactionManager.json"
+import Cookies from 'js-cookie';
 // reactstrap components
 import {
     Button,
@@ -103,6 +104,7 @@ export default function SignUpScreen({ account }) {
         if (res.ok) {
             const data = await res.json();
             console.log(data);
+            Cookies.set('jwt', data.token, { expires: 7 });
             localStorage.setItem("user-voting", JSON.stringify(data.newUser));
             setAuthUser(data.newUser);
             handleAddUseIdOnBC(data.newUser._id);

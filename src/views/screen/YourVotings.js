@@ -52,7 +52,9 @@ export default function YourVotings({ isLogin }) {
     // hàm getYourVotings
     async function getYourVotings() {
         try {
-            const response = await fetch(`${apiUrl}/api/votings/getYourVotings/${userInfor._id}`);
+            const response = await fetch(`${apiUrl}/api/votings/getYourVotings/${userInfor._id}`, {
+                credentials: 'include',
+            });
             const data = await response.json();
             console.log(data);
             setVotings(data)

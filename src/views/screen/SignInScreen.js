@@ -28,11 +28,11 @@ import {
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Signup from "views/IndexSections/Signup";
-import { createUserWithEmailAndPassword , sendPasswordResetEmail} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../firebase.js";
 
-import {  getDatabase, ref, set, serverTimestamp, onValue } from "firebase/database";
+import { getDatabase, ref, set, serverTimestamp, onValue } from "firebase/database";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
@@ -41,6 +41,8 @@ import { useContext } from "react";
 import { Button as ButtonAnt, Divider, notification, Space } from 'antd';
 import axios from "axios";
 import apiUrl from "api-url.js";
+
+import Cookies from 'js-cookie';
 
 export default function SignInScreen({ account }) {
     const [squares1to6, setSquares1to6] = React.useState("");
@@ -120,177 +122,186 @@ export default function SignInScreen({ account }) {
 
     }
 
-    const { setAuthUser } = useContext(AppContext);
 
-    const signInWithMongodb = async () => {
-        console.log("sign in", email, password)
-        try {
-            const res = await axios.post(`${apiUrl}/api/auth/login`, {
-                email: email,
-                password: password
-            })
-                .then((res) => {
-                    console.log(res.data.user);
-                    if (res.data.user.userId == "0") {
-                        openNotification(res.data.user.name)
-                        return
-                    }
-                    if (res.data.error) {
-                        throw new Error(res.data.error);
-                    }
+        const { setAuthUser } = useContext(AppContext);
 
-                    localStorage.setItem("user-voting", JSON.stringify(res.data.user));
-                    setAuthUser(res.data.user);
-                    navigate('/');
+        const signInWithMongodb = async () => {
+
+            console.log("sign in", email, password)
+            try {
+                const res = await axios.post(`${apiUrl}/api/auth/login`, {
+                    email: email,
+                    password: password
                 })
-        } catch (error) {
-            // toast.error(error.message);
-        } finally {
-            // setLoading(false);
-        }
-    };
+                    .then((res) => {
+                        console.log(res.data.user + res.data.token);
+                        if(res.data.token) {
+                            // ghi token vào cookie với name là jwt
+                            Cookies.set('jwt', res.data.token, { expires: 7 });
+                        }
+                        if (res.data.user.userId == "0") {
+                            openNotification(res.data.user.name)
+                            return
+                        }
+                        if (res.data.error) {
+                            throw new Error(res.data.error);
+                        }
+
+                        localStorage.setItem("user-voting", JSON.stringify(res.data.user));
+                        setAuthUser(res.data.user);
+                        
+                        navigate('/');
+                    })
+            } catch (error) {
+                // toast.error(error.message);
+            } finally {
+                // setLoading(false);
+            }
+        };
 
 
-    return (
-        <>
-            <ExamplesNavbar />
-            {contextHolder}
-            <div className="wrapper">
-                <div className="page-header">
-                    <div className="page-header-image" />
-                    <div className="content">
-                        <Container>
-                            <Row className="row-grid justify-content-between align-items-center">
-                                <Col className="mb-lg-auto" lg="6">
-                                    <Card className="card-register">
-                                        <CardHeader>
-                                            <CardImg
-                                                alt="..."
-                                                src={require("assets/img/square-purple-1.png")}
-                                            />
-                                            <CardTitle tag="h4">Sign In</CardTitle>
-                                        </CardHeader>
-                                        <CardBody>
-                                            <Form className="form">
+        return (
+            <>
+                <ExamplesNavbar />
+                {contextHolder}
+                <div className="wrapper">
+                    <div className="page-header">
+                        <div className="page-header-image" />
+                        <div className="content">
+                            <Container>
+                                <Row className="row-grid justify-content-between align-items-center">
+                                    <Col className="mb-lg-auto" lg="6">
+                                        <Card className="card-register">
+                                            <CardHeader>
+                                                <CardImg
+                                                    alt="..."
+                                                    src={require("assets/img/square-purple-1.png")}
+                                                />
+                                                <CardTitle tag="h4">Sign In</CardTitle>
+                                            </CardHeader>
+                                            <CardBody>
+                                                <Form className="form">
 
-                                                <InputGroup
-                                                    className={classnames({
-                                                        "input-group-focus": emailFocus,
-                                                    })}
-                                                >
-                                                    <InputGroupAddon addonType="prepend">
-                                                        <InputGroupText>
-                                                            <i className="tim-icons icon-email-85" />
-                                                        </InputGroupText>
-                                                    </InputGroupAddon>
-                                                    <Input
-                                                        placeholder="Email"
-                                                        type="text"
-                                                        onFocus={(e) => setEmailFocus(true)}
-                                                        onBlur={(e) => setEmailFocus(false)}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                    />
-                                                </InputGroup>
-                                                <InputGroup
-                                                    className={classnames({
-                                                        "input-group-focus": passwordFocus,
-                                                    })}
-                                                >
-                                                    <InputGroupAddon addonType="prepend">
-                                                        <InputGroupText>
-                                                            <i className="tim-icons icon-lock-circle" />
-                                                        </InputGroupText>
-                                                    </InputGroupAddon>
-                                                    <Input
-                                                        placeholder="Password"
-                                                        type={showPassword ? "text" : "password"}
-                                                        onFocus={(e) => setPasswordFocus(true)}
-                                                        onBlur={(e) => setPasswordFocus(false)}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                    />
-                                                    <i
-                                                        className={showPassword ? "fa fa-eye-slash" : "fa fa-eye"}
-                                                        onClick={() => setShowPassword(!showPassword)}
-                                                        style={{
-                                                            margin: 'auto 10px auto 10px',
-                                                        }}
-                                                    ></i>
-                                                </InputGroup>
-                                                <div style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                }}>
-                                                    <Label>
-                                                        <span className="form-check-sign" />Don't have an account? {" "}
-                                                        <a href="#pablo" onClick={() => window.location.href = '/signUp-page'}>
-                                                            Create an account
-                                                        </a>
-                                                        .
-                                                    </Label>
-                                                </div>
-
+                                                    <InputGroup
+                                                        className={classnames({
+                                                            "input-group-focus": emailFocus,
+                                                        })}
+                                                    >
+                                                        <InputGroupAddon addonType="prepend">
+                                                            <InputGroupText>
+                                                                <i className="tim-icons icon-email-85" />
+                                                            </InputGroupText>
+                                                        </InputGroupAddon>
+                                                        <Input
+                                                            placeholder="Email"
+                                                            type="text"
+                                                            onFocus={(e) => setEmailFocus(true)}
+                                                            onBlur={(e) => setEmailFocus(false)}
+                                                            onChange={(e) => setEmail(e.target.value)}
+                                                        />
+                                                    </InputGroup>
+                                                    <InputGroup
+                                                        className={classnames({
+                                                            "input-group-focus": passwordFocus,
+                                                        })}
+                                                    >
+                                                        <InputGroupAddon addonType="prepend">
+                                                            <InputGroupText>
+                                                                <i className="tim-icons icon-lock-circle" />
+                                                            </InputGroupText>
+                                                        </InputGroupAddon>
+                                                        <Input
+                                                            placeholder="Password"
+                                                            type={showPassword ? "text" : "password"}
+                                                            onFocus={(e) => setPasswordFocus(true)}
+                                                            onBlur={(e) => setPasswordFocus(false)}
+                                                            onChange={(e) => setPassword(e.target.value)}
+                                                        />
+                                                        <i
+                                                            className={showPassword ? "fa fa-eye-slash" : "fa fa-eye"}
+                                                            onClick={() => setShowPassword(!showPassword)}
+                                                            style={{
+                                                                margin: 'auto 10px auto 10px',
+                                                            }}
+                                                        ></i>
+                                                    </InputGroup>
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                    }}>
+                                                        <Label>
+                                                            <span className="form-check-sign" />Don't have an account? {" "}
+                                                            <a href="#pablo" onClick={() => window.location.href = '/signUp-page'}>
+                                                                Create an account
+                                                            </a>
+                                                            .
+                                                        </Label>
 
 
-                                            </Form>
-                                        </CardBody>
-                                        <CardFooter>
-                                            <Button className="btn-round" color="primary" size="lg" onClick={signIn}>
-                                                Sign In
-                                            </Button>
-                                        </CardFooter>
-                                    </Card>
-                                </Col>
-                                <Col lg="6">
-                                    <h3 className="display-3 text-white">
-                                        A polling system with blockchain technology
-                                    </h3>
-                                    <p className="text-white mb-3">
-                                        Here you can poll whatever you like
-                                    </p>
-                                    {/* <div className="btn-wrapper">
+                                                    </div>
+
+
+
+                                                </Form>
+                                            </CardBody>
+                                            <CardFooter>
+                                                <Button className="btn-round" color="primary" size="lg" onClick={signIn}>
+                                                    Sign In
+                                                </Button>
+                                            </CardFooter>
+                                        </Card>
+                                    </Col>
+                                    <Col lg="6">
+                                        <h3 className="display-3 text-white">
+                                            A polling system with blockchain technology
+                                        </h3>
+                                        <p className="text-white mb-3">
+                                            Here you can poll whatever you like
+                                        </p>
+                                        {/* <div className="btn-wrapper">
                                         <Button color="primary" to="register-page" >
                                             Register Page
                                         </Button>
                                     </div> */}
-                                </Col>
-                            </Row>
-                            <div className="register-bg" />
-                            {/* <div
+                                    </Col>
+                                </Row>
+                                <div className="register-bg" />
+                                {/* <div
                                 className="square square-1"
                                 id="square1"
                                 style={{ transform: squares1to6 }}
                             /> */}
-                            {/* <div
+                                {/* <div
                                 className="square square-2"
                                 id="square2"
                                 style={{ transform: squares1to6 }}
                             /> */}
-                            <div
-                                className="square square-3"
-                                id="square3"
-                                style={{ transform: squares1to6 }}
-                            />
-                            <div
-                                className="square square-4"
-                                id="square4"
-                                style={{ transform: squares1to6 }}
-                            />
-                            <div
-                                className="square square-5"
-                                id="square5"
-                                style={{ transform: squares1to6 }}
-                            />
-                            <div
-                                className="square square-6"
-                                id="square6"
-                                style={{ transform: squares1to6 }}
-                            />
-                        </Container>
+                                <div
+                                    className="square square-3"
+                                    id="square3"
+                                    style={{ transform: squares1to6 }}
+                                />
+                                <div
+                                    className="square square-4"
+                                    id="square4"
+                                    style={{ transform: squares1to6 }}
+                                />
+                                <div
+                                    className="square square-5"
+                                    id="square5"
+                                    style={{ transform: squares1to6 }}
+                                />
+                                <div
+                                    className="square square-6"
+                                    id="square6"
+                                    style={{ transform: squares1to6 }}
+                                />
+                            </Container>
+                        </div>
                     </div>
-                </div>
-                <Footer />
+                    <Footer />
 
-            </div>
-        </>
-    );
-}
+                </div>
+            </>
+        );
+    }

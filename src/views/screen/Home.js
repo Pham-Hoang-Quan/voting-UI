@@ -60,7 +60,9 @@ export default function Home({ isLogin }) {
         if (votingInfo.isPrivate) {
             try {
                 const idVoting = votingInfo._id;
-                axios.post(`${apiUrl}/api/participants/addUserWithPassword/${idVoting}`, { userId: userInfor._id, password })
+                axios.post(`${apiUrl}/api/participants/addUserWithPassword/${idVoting}`, { userId: userInfor._id, password }, {
+                    withCredentials: true,
+                })
                     .then(res => {
                         console.log(res);
                         console.log(res.data);
@@ -76,7 +78,7 @@ export default function Home({ isLogin }) {
         } else {
             try {
                 const idVoting = votingInfo._id;
-                axios.post(`${apiUrl}/api/participants/addParticipant/${idVoting}`, { userId: userInfor._id })
+                axios.post(`${apiUrl}/api/participants/addParticipant/${idVoting}`, { userId: userInfor._id }, {withCredentials: true, })
                     .then(res => {
                         console.log(res);
                         console.log(res.data);
@@ -95,7 +97,9 @@ export default function Home({ isLogin }) {
     const handleSearch = async () => {
         // lấy thong tin voting từ mongodb
         try {
-            const res = await axios.get(`${apiUrl}/api/votings/${idSearch}`)
+            const res = await axios.get(`${apiUrl}/api/votings/${idSearch}`, {
+                withCredentials: true,
+            })
                 .then(res => {
                     console.log(res);
                     setVotingInfo(res.data);
