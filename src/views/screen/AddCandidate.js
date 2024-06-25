@@ -146,6 +146,7 @@ export default function AddCandidate() {
                     name,
                     description,
                 }),
+                credentials: 'include',
             });
 
             if (res.ok) {
@@ -173,6 +174,7 @@ export default function AddCandidate() {
                     name,
                     description,
                 }),
+                credentials: 'include',
             });
 
             if (res.ok) {
@@ -189,7 +191,10 @@ export default function AddCandidate() {
     }
     const loadCandidates = async () => {
         try {
-            const res = await fetch(`${apiUrl}/api/votings/getAllCandiddates/${idVoting}`);
+            const res = await fetch(`${apiUrl}/api/votings/getAllCandiddates/${idVoting}`, {
+                credentials: 'include',
+            
+            });
             if (res.ok) {
                 const data = await res.json();
                 console.log(data);

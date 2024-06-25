@@ -45,7 +45,9 @@ function PollsList() {
     useEffect(() => {
         async function getVotings() {
             try {
-                const response = await fetch(`/api/votings/getVotings/all`);
+                const response = await fetch(`/api/votings/getVotings/all`, {
+                    credentials: 'include',
+                });            
                 const data = await response.json();
                 console.log(data);
                 setPolls(data);

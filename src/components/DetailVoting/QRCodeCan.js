@@ -11,18 +11,24 @@ const QRCodeCan = ({ userId, votingId }) => {
         const getUpdateVoteList = async () => {
             try {
                 if (votingId && userId && candidateNames.length <= 0) {
-                    const res = await fetch(`${apiUrl}/api/smartcontract/getVoteUpdatesByIdVotingAndUser/${votingId}/${userId}`)
+                    const res = await fetch(`${apiUrl}/api/smartcontract/getVoteUpdatesByIdVotingAndUser/${votingId}/${userId}`, {
+                        credentials: 'include',
+                    })
                     const Data = await res.json();
                     console.log("getVoteUpdatesByIdVotingAndUser ", Data)
                     setUpdateVoteList(Data);
                     // nếu không có update nào thì lấy ra các vote của user đó
                     if (Data.length == 0) {
-                        const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdUser/${userId}`)
+                        const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdUser/${userId}`,{
+                            credentials: 'include',
+                        })
                         const votesByUserId = await res.json();
                         votesByUserId.map(async (vote) => {
                             console.log("Vote", vote);
                             if (vote.idVoting == votingId) {
-                                const response = await fetch(`${apiUrl}/api/candidates/${vote.idCandidate}`);
+                                const response = await fetch(`${apiUrl}/api/candidates/${vote.idCandidate}`,{
+                                    credentials: 'include',
+                                });
                                 if (response.ok) {
                                     const candidateData = await response.json();
                                     console.log("CandidateData", candidateData.name);
@@ -36,7 +42,9 @@ const QRCodeCan = ({ userId, votingId }) => {
                     }
 
                     const firstVote = Data[0];
-                    const response = await fetch(`${apiUrl}/api/candidates/${firstVote[3]}`);
+                    const response = await fetch(`${apiUrl}/api/candidates/${firstVote[3]}`, {
+                        credentials: 'include',
+                    });
                     if (response.ok) {
                         const candidateData = await response.json();
                         console.log("CandidateData", candidateData.name);
@@ -49,7 +57,9 @@ const QRCodeCan = ({ userId, votingId }) => {
                     Data.map(async (update) => {
                         console.log("New candidate id", update.idCandidateNew);
 
-                        const response = await fetch(`${apiUrl}/api/candidates/${update[2]}`);
+                        const response = await fetch(`${apiUrl}/api/candidates/${update[2]}`,{
+                            credentials: 'include',
+                        });
                         if (response.ok) {
                             const candidateData = await response.json();
                             console.log("CandidateData", candidateData.name);

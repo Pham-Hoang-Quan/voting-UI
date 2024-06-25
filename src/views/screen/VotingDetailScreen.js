@@ -93,7 +93,7 @@ export default function VotingDetail() {
                 _idCandidate: canIdString,
                 _idVoting: idVoting,
                 _time: id
-            }).then(result => {
+            }, { withCredentials: true }).then(result => {
                 console.log(result.data);
                 setVotedModal(true);
             })
@@ -121,7 +121,7 @@ export default function VotingDetail() {
                 _idCandidateOld: canIdOld,
                 _idVoting: idVoting,
                 _time: id
-            }).then(result => {
+            }, { withCredentials: true }).then(result => {
                 console.log(result.data);
                 setVotedModal(true);
             })
@@ -140,7 +140,9 @@ export default function VotingDetail() {
     // hàm lấy danh sách các ứng viên từ firebase
     const loadCandidates = async () => {
         try {
-            const res = await fetch(`${apiUrl}/api/votings/getAllCandiddates/${idVoting}`);
+            const res = await fetch(`${apiUrl}/api/votings/getAllCandiddates/${idVoting}`, {
+                credentials: 'include',
+            });
             if (res.ok) {
                 const data = await res.json();
                 setCandidates(data);
@@ -152,11 +154,15 @@ export default function VotingDetail() {
     const loadVotingInfo = async () => {
         // lấy thông tin cuộc bình chọn từ mongodb
         try {
-            const res = await fetch(`${apiUrl}/api/votings/${idVoting}`);
+            const res = await fetch(`${apiUrl}/api/votings/${idVoting}`, {
+                credentials: 'include',
+            });
             if (res.ok) {
+
                 const data = await res.json();
                 setVotingInfo(data);
-                console.log(data.owner);
+                console.log("VotingInfo", data);
+                console.log("Owner",data.owner);
             } else {
                 alert("Voting not found")
                 return (<div></div>)
@@ -172,7 +178,9 @@ export default function VotingDetail() {
     const getTransWithVotingId = async () => {
         try {
             if (idVoting) {
-                const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdVoting/${idVoting}`)
+                const res = await fetch(`${apiUrl}/api/smartcontract/getVoteByIdVoting/${idVoting}`, {
+                    credentials: 'include',
+                })
                 const transData = await res.json();
                 setTrans(transData);
                 console.log(transData);
@@ -208,8 +216,8 @@ export default function VotingDetail() {
     }, []);
 
     useEffect(() => {
-        console.log(votingInfo.owner._id + userInfor._id)
-        if(votingInfo && userInfor) {
+        // console.log(votingInfo.owner._id + userInfor._id)
+        if (votingInfo && userInfor) {
             setIsOwner(votingInfo.owner._id == userInfor._id);
         }
     }, [votingInfo, userInfor])
@@ -228,6 +236,7 @@ export default function VotingDetail() {
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({ userId }),
+                            credentials: 'include',
                         });
                         if (res.ok) {
                             const data = await res.json();
@@ -321,6 +330,7 @@ export default function VotingDetail() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ userId: userInfor._id, password }),
+                credentials: 'include',
             });
             if (res.ok) {
                 const data = await res.json();
@@ -368,7 +378,7 @@ export default function VotingDetail() {
             </div >
         );
     }
-    
+
     const showMoreInfo = async (candidate) => {
         setSelectedCandidate(candidate);
         setMoreModal(true);

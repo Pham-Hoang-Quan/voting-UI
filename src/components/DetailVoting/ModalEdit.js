@@ -87,6 +87,7 @@ const ModalEdit = ({ votingInfo, loadVotingInfo }) => {
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    credentials: 'include',
                     body: JSON.stringify({
                         title: title,
                         description: description,

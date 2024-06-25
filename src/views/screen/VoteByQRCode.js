@@ -100,6 +100,8 @@ export default function VoteByQRCode() {
             const res = await axios.post(`${apiUrl}/api/auth/login`, {
                 email: email,
                 password: password
+            }, {
+                withCredentials: true,
             })
                 .then((res) => {
                     console.log(res.data.user);
@@ -151,6 +153,7 @@ export default function VoteByQRCode() {
                 userId: "0",
                 address: "address"
             }),
+            credentials: 'include'
         });
 
         if (res.ok) {
@@ -168,7 +171,9 @@ export default function VoteByQRCode() {
     const handleAddUseIdOnBC = async (userId) => {
         try {
             axios.post(`${apiUrl}/api/smartcontract/addUser`,
-                { user: userId }).
+                { user: userId }, {
+                    withCredentials: true,
+                }).
                 then(response => {
                     console.log(response.data);
                 });
@@ -191,7 +196,7 @@ export default function VoteByQRCode() {
         if (candidateId) {
             const getCandidate = async () => {
                 try {
-                    const res = await axios.get(`${apiUrl}/api/candidates/${candidateId}`)
+                    const res = await axios.get(`${apiUrl}/api/candidates/${candidateId}`, {withCredentials: true})
                         .then(res => {
                             // console.log(res.data);
                             setCandidateInfo(res.data);
@@ -211,7 +216,7 @@ export default function VoteByQRCode() {
         if (candidateInfo) {
             const getVotingInfo = async () => {
                 try {
-                    const res2 = await axios.get(`${apiUrl}/api/votings/${candidateInfo.idVoting}`)
+                    const res2 = await axios.get(`${apiUrl}/api/votings/${candidateInfo.idVoting}`,{withCredentials: true})
                         .then(res2 => {
                             console.log(res2.data);
                             if (moment(res2.data.endAt, 'YYYYMMDD').isBefore(moment())) {
@@ -250,7 +255,7 @@ export default function VoteByQRCode() {
                 _idCandidate: canIdString,
                 _idVoting: candidateInfo.idVoting,
                 _time: id
-            }).then(result => {
+            }, {withCredentials:true}).then(result => {
                 console.log(result.data);
                 // setVotedModal(true);
                 success("Voting added successfully");
