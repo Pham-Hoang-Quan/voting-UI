@@ -58,7 +58,9 @@ function Dashboard() {
     // hàm láy danh sách votings từ mongodb
     async function getAllVotings() {
       try {
-        const response = await fetch(`${apiUrl}/api/votings/getVotings/all`);
+        const response = await fetch(`${apiUrl}/api/votings/getVotings/all`, {
+          credentials: 'include',
+        });
         const data = await response.json();
         console.log(data);
         setPolls(data);
@@ -72,7 +74,9 @@ function Dashboard() {
     // hàm lấy danh sách các users từ mongodb
     async function getAllUsers() {
       try {
-        const response = await fetch(`${apiUrl}/api/users/getUsers/user`);
+        const response = await fetch(`${apiUrl}/api/users/getUsers/user`, {
+          credentials: 'include',
+        });
         const data = await response.json();
         setUsers(data);
       } catch (error) {

@@ -22,6 +22,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import MDAvatar from "components/MDAvatar";
 
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -41,13 +42,13 @@ function PollsList() {
     // const [controller, dispatch, users] = useMaterialUIController();
     const [tableData, setTableData] = useState({ columns: [], rows: [] });
     const [polls, setPolls] = useState([])
-    
+
     useEffect(() => {
         async function getVotings() {
             try {
                 const response = await fetch(`/api/votings/getVotings/all`, {
                     credentials: 'include',
-                });            
+                });
                 const data = await response.json();
                 console.log(data);
                 setPolls(data);
@@ -86,9 +87,13 @@ function PollsList() {
                             endAt: <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
                                 {moment(poll.endAt).format("MMM Do YY")}
                             </MDTypography>,
-                            action: <MDTypography component="a" href="#" variant="caption" color="info" fontWeight="medium">
-                                Detail
-                            </MDTypography>
+                            action:
+
+                                <Link to={`/votingDetail?votingId=${poll._id}`} >
+                                    <MDTypography component="a" href='' variant="caption" color="info" fontWeight="medium" >
+                                        Detail
+                                    </MDTypography>
+                                </Link>
                             // Add more fields as needed
                         };
                     }
